@@ -4,6 +4,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import db, login_manager
 from app.models import User
 
+from werkzeug.security import generate_password_hash
+
 auth_bp = Blueprint('auth', __name__)
 
 
@@ -33,3 +35,19 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+@auth_bp.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        old = request.form.get('old_password')
+        new = request.form.get('new_password')
+        if not current_user.check_password(old):
+            flash('كلمة المرور القديمة غير صحيحة', 'danger')
+        else:
+            current_user.set_password(new)
+            db.session.commit()
+            flash('تم تحديث كلمة المرور', 'success')
+            return redirect(url_for('admin.dashboard'))
+    return render_template('change_password.html')

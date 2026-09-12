@@ -6,6 +6,7 @@
 <div class="row">
   <div class="col-md-6">
     <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <div class="mb-3">
         <label class="form-label">الطالب</label>
         <select name="student_id" class="form-select">
@@ -37,7 +38,7 @@
       <tbody>
         {% for a in attendance %}
           <tr>
-            <td>{{ a.student_id }}</td>
+            <td>{{ a.student.name if a.student else a.student_id }}</td>
             <td>{{ a.date }}</td>
             <td>{{ a.status }}</td>
           </tr>

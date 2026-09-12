@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from app import db
-from app.models import Student, Teacher, SchoolClass, Subject, Grade, Attendance
+from app.models import Student, Teacher, SchoolClass, Subject, Grade, Attendance, User
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -243,6 +243,58 @@ def edit_attendance(id):
         return redirect(url_for('admin.attendance'))
     students = Student.query.all()
     return render_template('attendance_edit.html', attendance_record=a, students=students)
+
+
+# ---- Users management ----
+@admin_bp.route('/users', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def users():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        role = request.form.get('role')
+        is_admin = True if role == 'admin' else False
+        if User.query.filter_by(username=username).first():
+            flash('اسم المستخدم موجود بالفعل', 'danger')
+        else:
+            u = User(username=username, is_admin=is_admin, role=role)
+            u.set_password(password)
+            db.session.add(u)
+            db.session.commit()
+            flash('تم إنشاء المستخدم', 'success')
+        return redirect(url_for('admin.users'))
+
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+
+@admin_bp.route('/users/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_user(id):
+    u = User.query.get_or_404(id)
+    if request.method == 'POST':
+        u.role = request.form.get('role')
+        u.is_admin = True if u.role == 'admin' else False
+        db.session.commit()
+        flash('تم تحديث المستخدم', 'success')
+        return redirect(url_for('admin.users'))
+    return render_template('users_edit.html', user=u)
+
+
+@admin_bp.route('/users/change_password/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def user_change_password(id):
+    u = User.query.get_or_404(id)
+    if request.method == 'POST':
+        new = request.form.get('new_password')
+        u.set_password(new)
+        db.session.commit()
+        flash('تم تغيير كلمة المرور', 'success')
+        return redirect(url_for('admin.users'))
+    return render_template('users_change_password.html', user=u)
 
 
 # ---- Search ----

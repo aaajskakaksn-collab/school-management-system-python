@@ -10,14 +10,14 @@ SECURE_ADMIN_PASSWORD = 'A!9kX2#b7LqP'  # اخترت كلمة معقدة آمن�
 app = create_app()
 
 with app.app_context():
-    os.makedirs('instance', exist_ok=True)
+    os.makedirs('example', exist_ok=True)
     # حذف الجداول القديمة وإنشاء جديدة لضمان القيم التجريبية النقية
     db.drop_all()
     db.create_all()
 
     # إضافة مسؤول افتراضي
     if not User.query.filter_by(username='admin').first():
-        admin = User(username='admin', is_admin=True)
+        admin = User(username='admin', is_admin=True, role='admin')
         admin.set_password(SECURE_ADMIN_PASSWORD)
         db.session.add(admin)
 
@@ -41,18 +41,20 @@ with app.app_context():
     st2 = Student(name='ليلى كريم', email='l.karim@example.com', school_class=c2)
     db.session.add_all([st1, st2])
 
-    # إضافة درجات حضور افتراضية
-    g1 = Grade(student_id=1, subject_id=1, value=85.0)
-    g2 = Grade(student_id=2, subject_id=2, value=92.5)
+    db.session.commit()
+
+    # إضافة درجات بعد معرفة ids
+    g1 = Grade(student_id=st1.id, subject_id=s1.id, value=85.0)
+    g2 = Grade(student_id=st2.id, subject_id=s2.id, value=92.5)
     db.session.add_all([g1, g2])
 
-    a1 = Attendance(student_id=1, status='حاضر')
-    a2 = Attendance(student_id=2, status='غائب')
+    a1 = Attendance(student_id=st1.id, status='حاضر')
+    a2 = Attendance(student_id=st2.id, status='غائب')
     db.session.add_all([a1, a2])
 
     db.session.commit()
 
     print('قاعدة البيانات تم إنشاؤها ومليئة ببيانات تجريبية.')
-    print(f'بيانات الدخول التجريبية:')
-    print(f'  اسم المستخدم: admin')
+    print('بيانات الدخول التجريبية:')
+    print('  اسم المستخدم: admin')
     print(f'  كلمة المرور: {SECURE_ADMIN_PASSWORD}')

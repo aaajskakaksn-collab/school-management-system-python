@@ -2,12 +2,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 from config import Config
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.login_message = 'الرجاء تسجيل الدخول للمتابعة.'
+csrf = CSRFProtect()
 
 
 def create_app():
@@ -16,6 +18,7 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     # Import and register blueprints
     from app.auth import auth_bp

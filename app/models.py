@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+    role = db.Column(db.String(20), default='teacher')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -29,6 +30,8 @@ class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=True)
+    # relationship to grades
+    grades = db.relationship('Grade', backref='subject', lazy=True)
 
 
 class SchoolClass(db.Model):
@@ -42,6 +45,8 @@ class Student(db.Model):
     name = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(120), nullable=True)
     class_id = db.Column(db.Integer, db.ForeignKey('school_class.id'), nullable=True)
+    grades = db.relationship('Grade', backref='student', lazy=True)
+    attendance_records = db.relationship('Attendance', backref='student', lazy=True)
 
 
 class Grade(db.Model):
@@ -57,4 +62,3 @@ class Attendance(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     date = db.Column(db.Date, default=datetime.utcnow)
     status = db.Column(db.String(10), nullable=False)  # حاضر/غائب
-

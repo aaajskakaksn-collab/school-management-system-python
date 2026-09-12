@@ -1,0 +1,53 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>المستخدمون</h3>
+<div class="row">
+  <div class="col-md-6">
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="mb-3">
+        <label class="form-label">اسم المستخدم</label>
+        <input name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">كلمة المرور</label>
+        <input name="password" class="form-control" type="password" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">الدور</label>
+        <select name="role" class="form-select">
+          <option value="teacher">معلم</option>
+          <option value="admin">مدير</option>
+        </select>
+      </div>
+      <button class="btn btn-success">إنشاء</button>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>اسم المستخدم</th>
+          <th>الدور</th>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+          <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.role }}</td>
+            <td>
+              <a href="{{ url_for('admin.edit_user', id=u.id) }}" class="btn btn-sm btn-primary">تعديل</a>
+              <a href="{{ url_for('admin.user_change_password', id=u.id) }}" class="btn btn-sm btn-warning">تغيير كلمة المرور</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
