@@ -1,0 +1,18 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>تعديل بيانات المعلم</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">الاسم</label>
+    <input name="name" class="form-control" value="{{ teacher.name }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">البريد الإلكتروني</label>
+    <input name="email" class="form-control" value="{{ teacher.email }}">
+  </div>
+  <button class="btn btn-primary">حفظ</button>
+  <a href="{{ url_for('admin.teachers') }}" class="btn btn-secondary">إلغاء</a>
+</form>
+{% endblock %}

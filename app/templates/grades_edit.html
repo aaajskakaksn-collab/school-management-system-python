@@ -1,0 +1,30 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>تعديل الدرجة</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">الطالب</label>
+    <select name="student_id" class="form-select">
+      {% for s in students %}
+        <option value="{{ s.id }}" {% if grade.student_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">المادة</label>
+    <select name="subject_id" class="form-select">
+      {% for sub in subjects %}
+        <option value="{{ sub.id }}" {% if grade.subject_id == sub.id %}selected{% endif %}>{{ sub.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">الدرجة</label>
+    <input name="value" class="form-control" value="{{ grade.value }}" required>
+  </div>
+  <button class="btn btn-primary">حفظ</button>
+  <a href="{{ url_for('admin.grades') }}" class="btn btn-secondary">إلغاء</a>
+</form>
+{% endblock %}

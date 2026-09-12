@@ -1,0 +1,14 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>تعديل بيانات الصف</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">اسم الصف</label>
+    <input name="name" class="form-control" value="{{ class_item.name }}" required>
+  </div>
+  <button class="btn btn-primary">حفظ</button>
+  <a href="{{ url_for('admin.classes') }}" class="btn btn-secondary">إلغاء</a>
+</form>
+{% endblock %}

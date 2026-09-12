@@ -1,0 +1,23 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>تعديل المادة</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">اسم المادة</label>
+    <input name="name" class="form-control" value="{{ subject.name }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">المعلم</label>
+    <select name="teacher_id" class="form-select">
+      <option value="">-- لا يوجد --</option>
+      {% for t in teachers %}
+        <option value="{{ t.id }}" {% if subject.teacher_id == t.id %}selected{% endif %}>{{ t.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button class="btn btn-primary">حفظ</button>
+  <a href="{{ url_for('admin.subjects') }}" class="btn btn-secondary">إلغاء</a>
+</form>
+{% endblock %}

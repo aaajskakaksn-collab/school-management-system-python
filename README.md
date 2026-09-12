@@ -1,2 +1,44 @@
-# school-management-system-python
-School Management System - Complete graduation project with Flask and SQLite
+# نظام إدارة المدارس (Flask + SQLite)
+
+هذا المستودع يحتوي على مشروع Flask لنظام إدارة المدارس بواجهة عربية (RTL) وSQLite.
+
+ملخص سريع:
+- الإطار: Flask
+- قاعدة البيانات: SQLite عبر SQLAlchemy
+- الواجهة: قوالب Jinja2 بالعربية واتجاه RTL (Bootstrap RTL + خط عربي)
+
+بيانات الدخول التجريبية (آمنة):
+- اسم المستخدم: admin
+- كلمة المرور: A!9kX2#b7LqP
+
+ملاحظة مهمة: سكربت التهيئة seed_db.py يقوم بإنشاء القاعدة وملئها بالبيانات التجريبية (المستخدم أعلاه مُنشأ تلقائياً).
+
+تشغيل المشروع محلياً:
+1) أنشئ بيئة افتراضية ونشطها:
+   - python -m venv venv
+   - source venv/bin/activate  (Linux/Mac) أو venv\\Scripts\\activate (Windows)
+
+2) ثبّت المتطلبات:
+   - pip install -r requirements.txt
+
+3) أنشئ وملأ قاعدة البيانات:
+   - python seed_db.py
+   ستنشئ السكربت مجلد instance وملف instance/db.sqlite3 وتطبع بيانات الدخول.
+
+4) شغّل التطبيق:
+   - python run.py
+   افتح المتصفح: http://127.0.0.1:5000/login
+
+ملاحظات أمان:
+- غيّر SECRET_KEY وبيانات المسؤول قبل نشر التطبيق في بيئة إنتاج.
+- حالياً يتم تشغيل التطبيق بوضع debug=True لتسهيل التطوير.
+
+ترميز/عرض العربية:
+- جميع الملفات محفوظة بترميز UTF-8.
+- القوالب تحتوي على <meta charset="utf-8"> واتجاه الصفحة dir="rtl" لضمان عرض النصوص العربية بشكل صحيح.
+
+إذا رغبت، أستطيع:
+- إضافة ملف قاعدة بيانات instance/db.sqlite3 جاهز في المستودع (أدرجته حالياً في .gitignore لتجنب رفع ملفات ثنائية افتراضيًا).
+- تعطيل debug وتهيئة متغيرات بيئة آمنة.
+- إضافة اختبارات وآليات تحقق من صحة المدخلات وCSRF.
+

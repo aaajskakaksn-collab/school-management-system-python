@@ -1,6 +1,6 @@
 .env
 __pycache__/
-instance/db.sqlite3
+# instance/db.sqlite3
 *.pyc
 *.pyo
 *.pyd

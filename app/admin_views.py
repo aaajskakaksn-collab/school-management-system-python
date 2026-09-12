@@ -30,6 +30,7 @@ def dashboard():
     return render_template('dashboard.html', students_count=students_count, teachers_count=teachers_count, classes_count=classes_count)
 
 
+# ---- Students ----
 @admin_bp.route('/students', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -49,6 +50,22 @@ def students():
     return render_template('students.html', students=students, classes=classes)
 
 
+@admin_bp.route('/students/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_student(id):
+    s = Student.query.get_or_404(id)
+    if request.method == 'POST':
+        s.name = request.form.get('name')
+        s.email = request.form.get('email')
+        s.class_id = request.form.get('class_id') or None
+        db.session.commit()
+        flash('تم تحديث بيانات الطالب', 'success')
+        return redirect(url_for('admin.students'))
+    classes = SchoolClass.query.all()
+    return render_template('students_edit.html', student=s, classes=classes)
+
+
 @admin_bp.route('/students/delete/<int:id>', methods=['POST'])
 @login_required
 @admin_required
@@ -60,6 +77,7 @@ def delete_student(id):
     return redirect(url_for('admin.students'))
 
 
+# ---- Teachers ----
 @admin_bp.route('/teachers', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -77,6 +95,21 @@ def teachers():
     return render_template('teachers.html', teachers=teachers)
 
 
+@admin_bp.route('/teachers/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_teacher(id):
+    t = Teacher.query.get_or_404(id)
+    if request.method == 'POST':
+        t.name = request.form.get('name')
+        t.email = request.form.get('email')
+        db.session.commit()
+        flash('تم تحديث بيانات المعلم', 'success')
+        return redirect(url_for('admin.teachers'))
+    return render_template('teachers_edit.html', teacher=t)
+
+
+# ---- Classes ----
 @admin_bp.route('/classes', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -93,6 +126,20 @@ def classes():
     return render_template('classes.html', classes=classes)
 
 
+@admin_bp.route('/classes/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_class(id):
+    c = SchoolClass.query.get_or_404(id)
+    if request.method == 'POST':
+        c.name = request.form.get('name')
+        db.session.commit()
+        flash('تم تحديث بيانات الصف', 'success')
+        return redirect(url_for('admin.classes'))
+    return render_template('classes_edit.html', class_item=c)
+
+
+# ---- Subjects ----
 @admin_bp.route('/subjects', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -111,6 +158,22 @@ def subjects():
     return render_template('subjects.html', subjects=subjects, teachers=teachers)
 
 
+@admin_bp.route('/subjects/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_subject(id):
+    s = Subject.query.get_or_404(id)
+    if request.method == 'POST':
+        s.name = request.form.get('name')
+        s.teacher_id = request.form.get('teacher_id') or None
+        db.session.commit()
+        flash('تم تحديث المادة', 'success')
+        return redirect(url_for('admin.subjects'))
+    teachers = Teacher.query.all()
+    return render_template('subjects_edit.html', subject=s, teachers=teachers)
+
+
+# ---- Grades ----
 @admin_bp.route('/grades', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -131,6 +194,24 @@ def grades():
     return render_template('grades.html', grades=grades, students=students, subjects=subjects)
 
 
+@admin_bp.route('/grades/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_grade(id):
+    g = Grade.query.get_or_404(id)
+    if request.method == 'POST':
+        g.student_id = request.form.get('student_id')
+        g.subject_id = request.form.get('subject_id')
+        g.value = float(request.form.get('value'))
+        db.session.commit()
+        flash('تم تحديث الدرجة', 'success')
+        return redirect(url_for('admin.grades'))
+    students = Student.query.all()
+    subjects = Subject.query.all()
+    return render_template('grades_edit.html', grade=g, students=students, subjects=subjects)
+
+
+# ---- Attendance ----
 @admin_bp.route('/attendance', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -149,6 +230,22 @@ def attendance():
     return render_template('attendance.html', attendance=attendance, students=students)
 
 
+@admin_bp.route('/attendance/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_attendance(id):
+    a = Attendance.query.get_or_404(id)
+    if request.method == 'POST':
+        a.student_id = request.form.get('student_id')
+        a.status = request.form.get('status')
+        db.session.commit()
+        flash('تم تحديث سجل الحضور', 'success')
+        return redirect(url_for('admin.attendance'))
+    students = Student.query.all()
+    return render_template('attendance_edit.html', attendance_record=a, students=students)
+
+
+# ---- Search ----
 @admin_bp.route('/search')
 @login_required
 @admin_required

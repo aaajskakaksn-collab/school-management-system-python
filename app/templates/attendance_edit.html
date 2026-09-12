@@ -1,0 +1,25 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>تعديل سجل الحضور</h3>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">الطالب</label>
+    <select name="student_id" class="form-select">
+      {% for s in students %}
+        <option value="{{ s.id }}" {% if attendance_record.student_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">الحالة</label>
+    <select name="status" class="form-select">
+      <option value="حاضر" {% if attendance_record.status == 'حاضر' %}selected{% endif %}>حاضر</option>
+      <option value="غائب" {% if attendance_record.status == 'غائب' %}selected{% endif %}>غائب</option>
+    </select>
+  </div>
+  <button class="btn btn-primary">حفظ</button>
+  <a href="{{ url_for('admin.attendance') }}" class="btn btn-secondary">إلغاء</a>
+</form>
+{% endblock %}
