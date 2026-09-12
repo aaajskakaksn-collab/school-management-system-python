@@ -4,8 +4,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import db, login_manager
 from app.models import User
 
-from werkzeug.security import generate_password_hash
-
 auth_bp = Blueprint('auth', __name__)
 
 
@@ -20,7 +18,6 @@ def login():
             return redirect(url_for('admin.dashboard'))
         else:
             flash('بيانات الدخول غير صحيحة', 'danger')
-
     return render_template('login.html')
 
 
