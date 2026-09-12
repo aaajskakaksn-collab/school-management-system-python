@@ -4,6 +4,7 @@
 {% block content %}
 <h3>تعديل سجل الحضور</h3>
 <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <div class="mb-3">
     <label class="form-label">الطالب</label>
     <select name="student_id" class="form-select">

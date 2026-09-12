@@ -1,6 +1,4 @@
-# Env files
 .env
-example/.env
 __pycache__/
 # keep example DB in repo
 !example/db.sqlite3

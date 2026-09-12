@@ -2,10 +2,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>الدرجات</h3>
+<h3>المواد والدرجات</h3>
 <div class="row">
   <div class="col-md-6">
-    <h5>إضافة درجة</h5>
+    <h5>إضافة مادة</h5>
+    <form method="post" action="{{ url_for('admin.subjects') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="mb-3">
+        <label class="form-label">اسم المادة</label>
+        <input name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">المعلم</label>
+        <select name="teacher_id" class="form-select">
+          <option value="">-- لا يوجد --</option>
+          {% for t in teachers %}
+            <option value="{{ t.id }}">{{ t.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-success">إضافة مادة</button>
+    </form>
+
+    <hr>
+
+    <h5 class="mt-3">إضافة درجة</h5>
     <form method="post" action="{{ url_for('admin.grades') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <div class="mb-3">
@@ -41,6 +62,7 @@
           <th>المادة</th>
           <th>الدرجة</th>
           <th>التاريخ</th>
+          <th>إجراءات</th>
         </tr>
       </thead>
       <tbody>
@@ -50,6 +72,9 @@
             <td>{{ g.subject.name if g.subject else g.subject_id }}</td>
             <td>{{ g.value }}</td>
             <td>{{ g.date }}</td>
+            <td>
+              <a href="{{ url_for('admin.edit_grade', id=g.id) }}" class="btn btn-sm btn-primary">تعديل</a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>

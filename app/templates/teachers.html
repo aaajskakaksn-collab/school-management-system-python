@@ -6,6 +6,7 @@
 <div class="row">
   <div class="col-md-6">
     <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <div class="mb-3">
         <label class="form-label">الاسم</label>
         <input name="name" class="form-control" required>
@@ -24,6 +25,7 @@
         <tr>
           <th>الاسم</th>
           <th>البريد</th>
+          <th>إجراءات</th>
         </tr>
       </thead>
       <tbody>
@@ -31,6 +33,9 @@
           <tr>
             <td>{{ t.name }}</td>
             <td>{{ t.email or '-' }}</td>
+            <td>
+              <a href="{{ url_for('admin.edit_teacher', id=t.id) }}" class="btn btn-sm btn-primary">تعديل</a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>

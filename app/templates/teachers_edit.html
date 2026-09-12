@@ -4,6 +4,7 @@
 {% block content %}
 <h3>تعديل بيانات المعلم</h3>
 <form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <div class="mb-3">
     <label class="form-label">الاسم</label>
     <input name="name" class="form-control" value="{{ teacher.name }}" required>
