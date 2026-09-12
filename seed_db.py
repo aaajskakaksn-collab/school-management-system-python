@@ -2,10 +2,9 @@
 import os
 from app import create_app, db
 from app.models import User, Student, Teacher, SchoolClass, Subject, Grade, Attendance
-from werkzeug.security import generate_password_hash
 
-# كلمة مرور آمنة لمسؤول النظام (يمكنك تغييرها لاحقًا)
-SECURE_ADMIN_PASSWORD = 'A!9kX2#b7LqP'  # اخترت كلمة معقدة آمنة طولها 12
+# Read admin password from environment if provided. Do NOT store secrets in the repo.
+SECURE_ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'A!9kX2#b7LqP')
 
 app = create_app()
 
@@ -15,7 +14,7 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-    # إضافة مسؤول افتراضي
+    # Add default admin user
     if not User.query.filter_by(username='admin').first():
         admin = User(username='admin', is_admin=True, role='admin')
         admin.set_password(SECURE_ADMIN_PASSWORD)
@@ -55,6 +54,7 @@ with app.app_context():
     db.session.commit()
 
     print('قاعدة البيانات تم إنشاؤها ومليئة ببيانات تجريبية.')
+    print('ملاحظة: إذا لم تكن قد عيّنت متغير البيئة ADMIN_PASSWORD فُيستخدم قيمة افتراضية لأغراض الاختبار.')
     print('بيانات الدخول التجريبية:')
     print('  اسم المستخدم: admin')
     print(f'  كلمة المرور: {SECURE_ADMIN_PASSWORD}')
