@@ -1,0 +1,7 @@
+/* -*- coding: utf-8 -*- */
+body { font-family: 'Noto Naskh Arabic', serif; direction: rtl; }
+.container { max-width: 1100px; }
+
+/* Simple RTL tweaks */
+.navbar .form-control { margin-right: 0; margin-left: .5rem; }
+

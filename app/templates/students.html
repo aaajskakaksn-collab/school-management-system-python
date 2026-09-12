@@ -1,0 +1,57 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>الطلاب</h3>
+<div class="row">
+  <div class="col-md-6">
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">الاسم</label>
+        <input name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input name="email" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">الصف</label>
+        <select name="class_id" class="form-select">
+          <option value="">-- اختر الصف --</option>
+          {% for c in classes %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-success">إضافة</button>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>البريد</th>
+          <th>الصف</th>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.email or '-' }}</td>
+            <td>{{ s.school_class.name if s.school_class else '-' }}</td>
+            <td>
+              <form method="post" action="{{ url_for('admin.delete_student', id=s.id) }}" onsubmit="return confirm('هل أنت متأكد؟');">
+                <button class="btn btn-danger btn-sm">حذف</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

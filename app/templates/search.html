@@ -1,0 +1,38 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>نتائج البحث عن "{{ q }}"</h3>
+<div class="row">
+  <div class="col-md-4">
+    <h5>الطلاب</h5>
+    <ul class="list-group">
+      {% for s in students %}
+        <li class="list-group-item">{{ s.name }}</li>
+      {% else %}
+        <li class="list-group-item">لا توجد نتائج</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h5>المعلمون</h5>
+    <ul class="list-group">
+      {% for t in teachers %}
+        <li class="list-group-item">{{ t.name }}</li>
+      {% else %}
+        <li class="list-group-item">لا توجد نتائج</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h5>الصفوف</h5>
+    <ul class="list-group">
+      {% for c in classes %}
+        <li class="list-group-item">{{ c.name }}</li>
+      {% else %}
+        <li class="list-group-item">لا توجد نتائج</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!-- -*- coding: utf-8 -*- -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <h2>لوحة تحكم المدير</h2>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">الطلاب</h5>
+              <p class="card-text">{{ students_count }} طالب</p>
+              <a href="{{ url_for('admin.students') }}" class="btn btn-primary">عرض</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">المعلمون</h5>
+              <p class="card-text">{{ teachers_count }} معلم</p>
+              <a href="{{ url_for('admin.teachers') }}" class="btn btn-primary">عرض</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">الصفوف</h5>
+              <p class="card-text">{{ classes_count }} صف</p>
+              <a href="{{ url_for('admin.classes') }}" class="btn btn-primary">عرض</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

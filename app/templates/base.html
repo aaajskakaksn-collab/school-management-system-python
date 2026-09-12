@@ -1,0 +1,51 @@
+<!-- -*- coding: utf-8 -*- -->
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>نظام إدارة المدارس</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">نظام إدارة المدارس</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.students') }}">الطلاب</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.teachers') }}">المعلمون</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.classes') }}">الصفوف</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.subjects') }}">المواد</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.grades') }}">الدرجات</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.attendance') }}">الحضور</a></li>
+          </ul>
+          <form class="d-flex" action="{{ url_for('admin.search') }}" method="get">
+            <input class="form-control me-2" type="search" name="q" placeholder="ابحث" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">بحث</button>
+          </form>
+          <ul class="navbar-nav ms-3">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">تسجيل خروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
