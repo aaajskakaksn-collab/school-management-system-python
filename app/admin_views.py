@@ -268,3 +268,15 @@ def edit_attendance(id):
         return redirect(url_for('admin.attendance'))
     students = Student.query.order_by(Student.name).all()
     return render_template('attendance_edit.html', attendance_record=a, students=students)
+
+
+# Search route
+@admin_bp.route('/search')
+@login_required
+@teacher_or_admin
+def search():
+    q = request.args.get('q', '')
+    students = Student.query.filter(Student.name.contains(q)).all() if q else []
+    teachers = Teacher.query.filter(Teacher.name.contains(q)).all() if q else []
+    classes = SchoolClass.query.filter(SchoolClass.name.contains(q)).all() if q else []
+    return render_template('search.html', q=q, students=students, teachers=teachers, classes=classes)
